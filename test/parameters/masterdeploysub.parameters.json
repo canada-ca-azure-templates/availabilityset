@@ -13,7 +13,7 @@
                 {
                     "name": "validate",
                     "location": "canadacentral",
-                    "templateLink": "https://raw.githubusercontent.com/canada-ca-azure-templates/availabilityset/dev/azuredeploysub.json",
+                    "templateLink": "https://raw.githubusercontent.com/canada-ca-azure-templates/availabilityset/dev/template/azuredeploysub.json",
                     "parametersFile": "https://raw.githubusercontent.com/canada-ca-azure-templates/availabilityset/dev/test/parameters/validate.parameters.json",
                     "dependsOn": [
                         "resourcegroups"
