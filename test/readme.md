@@ -1,7 +1,7 @@
-Manual execution of validation does like this:
+# Manually running validation
 
-..\..\..\Core\deployments\scripts\manual-copy.ps1 -templateLibrarySrc ..\template\ -templateLibraryDst availabilityset/bernard-dev -storageRG PwS2-Infra-Storage-RG -storageAccountName azpwsdeploytpnjitlh3orvq -containerName library-dev
+Manual execution of validation can be done like this:
 
-then
+Commit updates to dev branch then run:
 
-.\validate.ps1 -templateLibraryName availabilityset -templateLibraryVersion bernard-dev
+.\validate.ps1
