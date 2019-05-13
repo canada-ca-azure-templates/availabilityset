@@ -8,13 +8,13 @@
                     "name": "resourcegroups",
                     "location": "canadacentral",
                     "templateLink": "https://raw.githubusercontent.com/canada-ca/accelerators_accelerateurs-azure/master/Templates/arm/resourcegroups/20190207.2/azuredeploysub.json",
-                    "parametersFile": "https://raw.githubusercontent.com/canada-ca-arm/availabilityset/dev/test/parameters/dependancy-resourcegroups-canadacentral.parameters.json"
+                    "parametersFile": "https://raw.githubusercontent.com/canada-ca-azure-templates/availabilityset/dev/test/parameters/dependancy-resourcegroups-canadacentral.parameters.json"
                 },
                 {
                     "name": "validate",
                     "location": "canadacentral",
-                    "templateLink": "https://raw.githubusercontent.com/canada-ca-arm/availabilityset/dev/azuredeploysub.json",
-                    "parametersFile": "https://raw.githubusercontent.com/canada-ca-arm/availabilityset/dev/test/parameters/validate.parameters.json",
+                    "templateLink": "https://raw.githubusercontent.com/canada-ca-azure-templates/availabilityset/dev/azuredeploysub.json",
+                    "parametersFile": "https://raw.githubusercontent.com/canada-ca-azure-templates/availabilityset/dev/test/parameters/validate.parameters.json",
                     "dependsOn": [
                         "resourcegroups"
                     ]

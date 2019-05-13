@@ -4,7 +4,7 @@ Param(
     [string]$Location = "canadacentral"
 )
 
-$availabilitysetDevURL = "https://raw.githubusercontent.com/canada-ca-arm/availabilityset/dev/azuredeploy.json"
+$availabilitysetDevURL = "https://raw.githubusercontent.com/canada-ca-azure-templates/availabilityset/dev/azuredeploy.json"
 
 #******************************************************************************
 # Script body
