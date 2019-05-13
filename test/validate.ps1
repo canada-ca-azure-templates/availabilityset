@@ -18,7 +18,7 @@ Write-Host "Cleanup validation resource content...";
 New-AzureRmResourceGroupDeployment -ResourceGroupName PwS2-validate-availabilityset-RG -Mode Complete -TemplateFile (Resolve-Path "$PSScriptRoot\parameters\cleanup.json") -Force -Verbose
 
 # Start the deployment
-Write-Host "Starting deployment...";
+Write-Host "Starting validation deployment...";
 
 New-AzureRmDeployment -Location $Location -Name "Deploy-Infrastructure-Dependancies" -TemplateUri "https://raw.githubusercontent.com/canada-ca/accelerators_accelerateurs-azure/master/Templates/arm/masterdeploy/20190319.1/masterdeploysub.json" -TemplateParameterFile (Resolve-Path -Path "$PSScriptRoot\parameters\masterdeploysub.parameters.json") -Verbose;
 
