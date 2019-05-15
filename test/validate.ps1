@@ -23,7 +23,7 @@ $currentBranch = git rev-parse --abbrev-ref HEAD
 
 if ($currentBranch -eq 'master') {
     $confirmation = Read-Host "You are working off the master branch... are you sure you want to validate the template from here? Switch to the dev branch is recommended. Continue? (y/n)"
-    if (!$confirmation -eq 'y') {
+    if ($confirmation -ne 'y') {
         exit
     }
 }
