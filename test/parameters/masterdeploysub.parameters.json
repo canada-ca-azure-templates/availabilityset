@@ -8,7 +8,7 @@
                     "name": "resourcegroups",
                     "location": "canadacentral",
                     "templateLink": "https://raw.githubusercontent.com/canada-ca-azure-templates/resourcegroups/20190514/template/azuredeploysub.json",
-                    "parametersFile": "https://raw.githubusercontent.com/canada-ca-azure-templates/availabilityset/dev/test/parameters/dependancy-resourcegroups-canadacentral.parameters.json"
+                    "parametersFile": "dependancy-resourcegroups-canadacentral.parameters.json"
                 }
             ]
         }
