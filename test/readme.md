@@ -1,11 +1,15 @@
 # Manually running validation
 
-To manual validate the template:
+Manual execution of validation does like this:
 
-1. Login to validation subscription
-2. Commit changes to the dev branch
-3. Run the following command:
+Commit updates to dev branch then run:
 
 ```powershell
 .\validate.ps1
+```
+
+If you want to keep the resources created during the validation to inspect them of troubleshoot issues run the validation with the following command:
+
+```powershell
+.\validate.ps1 -doNotCleanup
 ```
