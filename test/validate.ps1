@@ -2,7 +2,8 @@ Param(
     [Parameter(Mandatory = $false)][string]$templateLibraryName = (Split-Path (Resolve-Path "$PSScriptRoot\..") -Leaf),
     [string]$Location = "canadacentral",
     [string]$subscription = "",
-    [switch]$devopsCICD = $false
+    [switch]$devopsCICD = $false,
+    [switch]$doNotCleanup = $false
 )
 
 #******************************************************************************
@@ -19,8 +20,18 @@ function getValidationURL {
     return $validateURL
 }
 
+function getBaseParametersURL {
+    $remoteURL = git config --get remote.origin.url
+    $currentBranch = git rev-parse --abbrev-ref HEAD
+    $remoteURLnogit = $remoteURL -replace '\.git', ''
+    $remoteURLRAW = $remoteURLnogit -replace 'github.com', 'raw.githubusercontent.com'
+    $baseParametersURL = $remoteURLRAW + '/' + $currentBranch + '/test/parameters/'
+    return $baseParametersURL
+}
+
 $currentBranch = "dev"
 $validationURL = "https://raw.githubusercontent.com/canada-ca-azure-templates/$templateLibraryName/dev/template/azuredeploy.json"
+$baseParametersURL = "https://raw.githubusercontent.com/canada-ca-azure-templates/$templateLibraryName/dev/test/"
 
 if (-not $devopsCICD) {
     $currentBranch = git rev-parse --abbrev-ref HEAD
@@ -33,10 +44,11 @@ if (-not $devopsCICD) {
     }
 
     $validationURL = getValidationURL
+    $baseParametersURL = getBaseParametersURL
 
     # Make sure we update code to git
     # git branch dev ; git checkout dev ; git pull origin dev
-    git add . ; git commit -m "Update validation" ; git push origin $currentBranch
+    git add ..\. ; git commit -m "Update validation" ; git push origin $currentBranch
 }
 
 if ($subscription -ne "") {
@@ -44,14 +56,16 @@ if ($subscription -ne "") {
 }
 
 # Cleanup validation resource content in case it did not properly completed and left over components are still lingeringcd
-Write-Host "Cleanup old $templateLibraryName validation resources if needed...";
+if (-not $doNotCleanup) {
+    Write-Host "Cleanup old $templateLibraryName validation resources if needed...";
 
-New-AzureRmResourceGroupDeployment -ResourceGroupName PwS2-validate-$templateLibraryName-RG -Mode Complete -TemplateFile (Resolve-Path "$PSScriptRoot\parameters\cleanup.json") -Force -Verbose
+    New-AzureRmResourceGroupDeployment -ResourceGroupName PwS2-validate-$templateLibraryName-RG -Mode Complete -TemplateFile (Resolve-Path "$PSScriptRoot\parameters\cleanup.json") -Force -Verbose
+}
 
 # Start the deployment
 Write-Host "Starting $templateLibraryName dependancies deployment...";
 
-New-AzureRmDeployment -Location $Location -Name "Deploy-Infrastructure-Dependancies" -TemplateUri "https://raw.githubusercontent.com/canada-ca-azure-templates/masterdeploy/20190514/template/masterdeploysub.json" -TemplateParameterFile (Resolve-Path -Path "$PSScriptRoot\parameters\masterdeploysub.parameters.json") -Verbose;
+New-AzureRmDeployment -Location $Location -Name "Deploy-Infrastructure-Dependancies" -TemplateUri "https://raw.githubusercontent.com/canada-ca-azure-templates/masterdeploy/20190514/template/masterdeploysub.json" -TemplateParameterFile (Resolve-Path -Path "$PSScriptRoot\parameters\masterdeploysub.parameters.json") -baseParametersURL $baseParametersURL -Verbose;
 
 $provisionningState = (Get-AzureRmDeployment -Name "Deploy-Infrastructure-Dependancies").ProvisioningState
 
@@ -72,5 +86,8 @@ if ($provisionningState -eq "Failed") {
 }
 
 # Cleanup validation resource content
-Write-Host "Cleanup $templateLibraryName validation resources...";
-New-AzureRmResourceGroupDeployment -ResourceGroupName PwS2-validate-$templateLibraryName-RG -Mode Complete -TemplateFile (Resolve-Path "$PSScriptRoot\parameters\cleanup.json") -Force -Verbose
+if (-not $doNotCleanup) {
+    Write-Host "Cleanup old $templateLibraryName validation resources...";
+
+    New-AzureRmResourceGroupDeployment -ResourceGroupName PwS2-validate-$templateLibraryName-RG -Mode Complete -TemplateFile (Resolve-Path "$PSScriptRoot\parameters\cleanup.json") -Force -Verbose
+}
