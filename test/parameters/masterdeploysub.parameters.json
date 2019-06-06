@@ -5,7 +5,7 @@
         "deploymentSubArray": {
             "value": [
                 {
-                    "name": "resourcegroups",
+                    "name": "resourcegroups-availabilityset",
                     "location": "canadacentral",
                     "templateLink": "https://raw.githubusercontent.com/canada-ca-azure-templates/resourcegroups/20190514/template/azuredeploysub.json",
                     "parametersFile": "dependancy-resourcegroups-canadacentral.parameters.json"
